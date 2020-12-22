@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container tableFixHead">
+    <table class="table table-fixed">
+        <thead class="thead-dark">
+            <tr>
+                <th width="700px;">{{ frase }}</th>
+                {% if artistas %}
+                    <th>Artista</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody id="data-table">
+        {% for name,dados in tracks.items %}
+            <tr>
+                <td><img src="{{ dados.imagem }}"/> <a href="{{ dados.url }}" target="_blank"> {{ name }}</a>  </td>
+                {% if artistas %}
+                    <td>
+                        {% for nome,id in dados.artistas.items %}
+                            <a href="{% url 'artistTracks' %}?id={{ id }}">{{ nome }}</a>
+                            <br />
+                        {% endfor %}
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

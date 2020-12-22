@@ -1,0 +1,226 @@
+﻿
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+body {
+	 background-color: #bdc3c7;
+}
+.table-fixed {
+    width: 100%;
+    /* background-color: #f3f3f3; */
+    background-color: #E9ECEF;
+
+}
+.table-fixed tbody {
+     height: 200px;
+     overflow-y: auto;
+     width: 100%;
+}
+
+.tableFixHead {
+  overflow: auto;
+  height: 800px;
+  width: 900px;
+}
+
+.tableFixHead thead th {
+  position: sticky;
+  top: 0;
+  text-align: left;
+}
+
+.breadcrumb {
+    list-style: none;
+    padding: 0;
+}
+
+.breadcrumb > li {
+    display: inline;
+    width: 370px;
+}
+
+/*a little bit of reset*/
+#breadcrumb_album, #breadcrumb_album p, #breadcrumb_album h3 {
+list-style: none;
+margin:0; padding:0;
+}
+
+#breadcrumb_album > li{
+  float:left;
+  margin-right: 20px;
+  width: 140px;
+}
+
+#breadcrumb_album > li > .image{
+  display:block;
+  float:left;
+  margin-right:10px;
+}
+
+/*
+this instructions are to force the dimensions of image and its container <a>
+*/
+#breadcrumb_album > li > .image,
+#breadcrumb_album > li > .image > img{
+  width:24px; height:24px;
+}
+
+
+.breadcrumb > th:not(:last-child)::after {
+    content: "›";
+    margin: 0 .25em;
+}
+
+
+/* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+
+#else{
+   display: none;
+}
+
+#card > ul li {
+  height: 6rem;
+  padding: .75rem;
+  transition: all .5s ease;
+  transform: skew(3deg);
+  overflow: hidden;
+}
+#card > ul li:hover {
+  padding-bottom: 11rem;
+  transition: all .5s ease;
+}
+#card > ul li:nth-child(3n + 1) {
+  background: #40bf77;
+}
+#card > ul li:nth-child(3n + 2) {
+  background: black;
+}
+#card > ul li:nth-child(3n + 3) {
+  background: #53c685;
+  box-shadow: 5px 5px 10px rgba(0,0,0, .5);
+}
+
+ul.five ul:nth-child(even){
+    background-color: #6a8bab;
+}
+
+ul.five ul:nth-child(odd){
+    background-color: rgb(106, 170, 126);
+}
+
+.alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}

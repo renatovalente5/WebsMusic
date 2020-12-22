@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<form action='.' method='post'>
+    <p>New Playlist name: <input type="text" name="playlistName"/></p>
+    <div class="container tableFixHead">
+    {% csrf_token %}
+        {% if erro %}
+            <div class="alert">
+              <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+              <strong>ERROR!</strong> Insert the information requested
+            </div>
+        {% endif %}
+
+        <table class="table table-fixed" name="resultsTable">
+            <thead class="thead-dark">
+                <tr>
+                    <th style="max-width: 100px;">
+                        <input class="btn btn-success" type="submit" name="Submit!" value="CREATE" onclick="alertPlayList()"/>
+                    </th>
+
+                    <th width="700px;">{{ frase }} </th>
+
+                    {% if artistas %}
+                        <th>Artist</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody id="data-table">
+            {% for name,dados in tracks.items %}
+                <tr>
+                    <td style="text-align:center; vertical-align: middle;">
+                        <label class="container">
+                        <input type="checkbox" id="var{{ forloop.counter }}" name="nameMusica" value="{{ dados.id }}">
+                        </label>
+                    </td>
+                    <td>
+                        <img src="{{ dados.imagem }}"/> <a href="{{ dados.url }}" target="_blank"> {{ name }}</a>
+                    </td>
+                    {% if artistas %}
+                        <td>
+                            {% for nome,id in dados.artistas.items %}
+                                <a href="{% url 'artistTracks' %}?id={{ id }}">{{ nome }}</a>
+                                <br />
+                            {% endfor %}
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</form>
+{% endblock %}
