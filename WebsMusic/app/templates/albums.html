@@ -5,7 +5,47 @@
 <h2>{{ frase }}</h2>
 
 <div class="content">
-    {{ albums | safe}}
+    <table class="table table-fixed">
+        <thead class="thead-dark">
+            <tr>
+                <th >{{ frase }}</th>
+                <th >Artista</th>
+            </tr>
+        </thead>
+        <tbody id="data-table">
+        {% for name, dados in albums.items %}
+            <tr>
+                <td> {{ name }}  </td>
+                <td>
+                        <a href="{% url 'artistTracks' %}?id={{ dados.artista }}">{{ dados.artista }}</a>
+                        <br />
+                </td>
+                <td style="width: 120px;">
+                    <button class="btn btn-outline-success dropdown-toggle" type="button" onclick="showHidenItens({{ forloop.counter }})">Show Info
+                    <span class="caret"></span></button>
+                </td>
+                <td id="{{ forloop.counter }}" style="display:none" class="dropdown"><br />
+                    <ul>
+                        <li>
+                            Producer: {{ dados.producer }}
+                        </li>
+                        <li>
+                            Recorder: {{ dados.recorder }}
+                        </li>
+                        <li>
+                            Data: {{ dados.data }}
+                        </li>
+                        <li>
+                            Streams: {{ dados.streams }}
+                        </li>
+                        <br/>
+                    </ul>
+                </td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
 
 {% endblock %}

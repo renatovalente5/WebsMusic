@@ -1,11 +1,21 @@
 {% extends "layout.html" %}
 
 {% block content %}
-
-<h2>{{ frase }}</h2>
-
-<div class="content">
-    {{ artistas | safe}}
+<div class="container tableFixHead">
+    <table class="table table-fixed">
+        <thead class="thead-dark">
+            <tr>
+                <th width="700px;">{{ frase }}</th>
+            </tr>
+        </thead>
+        <tbody id="data-table">
+        {% for name, dados in info.items %}
+            <tr>
+                <td><img src="{{ dados.img }}"/> <a href="{% url 'artistTracks' %}?id={{ name }}"> {{ name }}</a>  </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
 
 {% endblock %}

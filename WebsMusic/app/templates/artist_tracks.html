@@ -7,30 +7,18 @@
         <thead class="thead-dark">
             <tr>
                 <th width="500px;">{{ frase }}</th>
-                {% if artistas %}
-                    <th>Artista</th>
-                {% endif %}
 
                 <th>Sample</th>
             </tr>
         </thead>
-        {{ tracks |safe }}
-{#        <tbody id="data-table">#}
-{#        {% for name,dados in tracks.items %}#}
-{#            <tr>#}
-{#                <td><img src="{{ dados.imagem }}"/> <a href="{{ dados.url }}" target="_blank"> {{ name }}</a>  </td>#}
-{#                {% if artistas %}#}
-{#                    <td>#}
-{#                        {% for nome,id in dados.artistas.items %}#}
-{#                            <a href="{% url 'artistTracks' %}?id={{ id }}" target="_blank">{{ nome }}</a>#}
-{#                            <br />#}
-{#                        {% endfor %}#}
-{#                    </td>#}
-{#                {% endif %}#}
-{#                <td><iframe src="{{ dados.embed }}" width="270" height="80"></iframe></td>#}
-{#            </tr>#}
-{#        {% endfor %}#}
-{#        </tbody>#}
+        <tbody id="data-table">
+        {% for name, music in tracks.items %}
+            <tr>
+                <td>{{ name }} </td>
+                <td><iframe width="560" height="315" src="{{ music }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></td>
+            </tr>
+        {% endfor %}
+        </tbody>
     </table>
 </div>
 

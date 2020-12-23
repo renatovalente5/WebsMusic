@@ -6,23 +6,17 @@
         <thead class="thead-dark">
             <tr>
                 <th width="700px;">{{ frase }}</th>
-                {% if artistas %}
-                    <th>Artista</th>
-                {% endif %}
+                <th>Artista</th>
             </tr>
         </thead>
         <tbody id="data-table">
-        {% for name,dados in tracks.items %}
+        {% for name,artista in tracks.items %}
             <tr>
-                <td><img src="{{ dados.imagem }}"/> <a href="{{ dados.url }}" target="_blank"> {{ name }}</a>  </td>
-                {% if artistas %}
+                <td> {{ name }} </td>
                     <td>
-                        {% for nome,id in dados.artistas.items %}
-                            <a href="{% url 'artistTracks' %}?id={{ id }}">{{ nome }}</a>
+                            <a href="{% url 'artistTracks' %}?id={{ artista }}">{{ artista }}</a>
                             <br />
-                        {% endfor %}
                     </td>
-                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
