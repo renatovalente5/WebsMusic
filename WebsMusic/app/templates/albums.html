@@ -2,25 +2,27 @@
 
 {% block content %}
 
-<h2>{{ frase }}</h2>
+<!-- <h2>{{ frase }}</h2> -->
 
-<div class="content">
+<div class="container tableFixHeadBIG">
     <table class="table table-fixed">
         <thead class="thead-dark">
             <tr>
                 <th >{{ frase }}</th>
                 <th >Artista</th>
+                <th ></th>
+                <th ></th>
             </tr>
         </thead>
         <tbody id="data-table">
         {% for name, dados in albums.items %}
             <tr>
-                <td> {{ name }}  </td>
-                <td>
+                <td style="width: 300px;"> {{ name }}  </td>
+                <td style="width: 300px;">
                         <a href="{% url 'artistTracks' %}?id={{ dados.artista }}">{{ dados.artista }}</a>
                         <br />
                 </td>
-                <td style="width: 120px;">
+                <td style="width: 80px;">
                     <button class="btn btn-outline-success dropdown-toggle" type="button" onclick="showHidenItens({{ forloop.counter }})">Show Info
                     <span class="caret"></span></button>
                 </td>
