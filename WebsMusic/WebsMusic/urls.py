@@ -28,5 +28,6 @@ urlpatterns = [
     path('albums/', views.albums, name='albums'),
     path('myPlayList/', views.myPlayList, name='myPlayList'),
     #path('pageRSS/', views.pageRSS, name='pageRSS'),
-    path('delete/', views.delete, name='delete')
+    path('delete/', views.delete, name='delete'),
+    path('knowArtists/', views.knowArtists, name='knowArtists')
 ]

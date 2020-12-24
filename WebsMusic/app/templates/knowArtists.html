@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block content %}
+<form action='.' method='post'>
+    <p>Artist name: <input type="text" name="ArtistName"/></p>
+    <div class="container tableFixHead">
+    {% csrf_token %}
+        {% if erro %}
+            <div class="alert">
+              <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+              <strong>ERROR!</strong> Insert the information requested
+            </div>
+        {% endif %}
+
+        <table class="table table-fixed" name="resultsTable">
+            <thead class="thead-dark">
+                <tr>
+                    <th style="max-width: 100px;">
+                        <input class="btn btn-success" type="submit" name="Submit!" value="CREATE" onclick="alertPlayList()"/>
+                    </th>
+
+                    <th width="700px;">{{ frase }} </th>
+                </tr>
+            </thead>
+            <tbody id="data-table">
+                {% for name, dados in info.items %}
+                    <tr>
+                        <td><img src="{{ dados }}"/> <a href="{% url 'artistTracks' %}?id={{ name }}"> {{ name }}</a>  </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</form>
+{% endblock %}

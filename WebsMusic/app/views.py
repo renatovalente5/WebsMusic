@@ -11,6 +11,7 @@ from lxml import etree
 import xmltodict
 # import requests
 import random
+
 # from lxml import etree
 # from urllib.request import urlopen
 # import datetime
@@ -21,10 +22,11 @@ _repositorio = "xpand-music"
 client = ApiClient(endpoint=_endpoint)
 accessor = GraphDBApi(client)
 
+
 # Create your views here.
 
 def home(request):
-    #return HttpResponse("GOOD LUCK")
+    # return HttpResponse("GOOD LUCK")
     # input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:home()"
     # query = session.execute(input)
     # # print(query)
@@ -94,7 +96,7 @@ def musicas(request):
     _body = {"query": query}
     res = accessor.sparql_select(body=_body, repo_name=_repositorio)
     res = json.loads(res)
-   # print(res);
+    # print(res);
     info = dict()
 
     for m in res['results']['bindings']:
@@ -105,6 +107,7 @@ def musicas(request):
         'frase': "Songs",
     }
     return render(request, "tracks.html", tparams)
+
 
 def artist_tracks(request):
     id = str(request.GET.get('id'))
@@ -124,10 +127,10 @@ def artist_tracks(request):
     _body = {"query": query}
     res = accessor.sparql_select(body=_body, repo_name=_repositorio)
     res = json.loads(res)
-    #print(res)
+    # print(res)
     info = dict()
     for t in res['results']['bindings']:
-        info[unquote(t['music']['value'])] = "https://www.youtube.com/embed/"+t['video']['value']
+        info[unquote(t['music']['value'])] = "https://www.youtube.com/embed/" + t['video']['value']
     tparams = {
         'tracks': info,
         'frase': "Músicas do Artista: " + id
@@ -148,24 +151,25 @@ def artistas(request):
                     ?id foaf:Image ?img
                 }'''
 
-    _body = {"query" : query}
+    _body = {"query": query}
     res = accessor.sparql_select(body=_body, repo_name=_repositorio)
     res = json.loads(res)
-    #print(res);
+    # print(res);
     info = dict()
     for a in res['results']['bindings']:
         temp = dict()
         temp['id'] = a['id']['value']
         temp['img'] = a['img']['value']
         info[unquote(a['aname']['value'])] = temp
-        #info[a['id']['value']] = unquote(a['aname']['value'])
+        # info[a['id']['value']] = unquote(a['aname']['value'])
 
-    #print(info)
+    # print(info)
     tparams = {
         'info': info,
         'frase': "Artistas:",
     }
     return render(request, "artistas.html", tparams)
+
 
 def albums(request):
     query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -188,7 +192,7 @@ def albums(request):
     _body = {"query": query}
     res = accessor.sparql_select(body=_body, repo_name=_repositorio)
     res = json.loads(res)
-   # print(res);
+    # print(res);
     info = dict()
     for a in res['results']['bindings']:
         temp = dict()
@@ -200,13 +204,11 @@ def albums(request):
         info[unquote(a['albumName']['value'])] = temp
         # info[a['id']['value']] = unquote(a['aname']['value'])
 
-
     tparams = {
         'albums': info,
         'frase': "Albums:",
     }
     return render(request, "albums.html", tparams)
-
 
 
 def criarPlayList(request):
@@ -285,6 +287,84 @@ def criarPlayList(request):
     #     return render(request, "criarPlayList.html", tparams)
 
 
+def insertKnowsArtist(artista):
+    query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                        PREFIX cs: <http://www.xpand.com/rdf/>
+                        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+                        select ?banda  ?outras
+                        where
+                        {
+                            ?banda foaf:name "%s" .
+                            ?banda cs:recorder ?recorder .
+                            ?outras cs:recorder ?recorder .
+                            ?outras rdf:type cs:MusicArtist .
+                        }''' % (quote(artista))
+
+    _body = {"query": query}
+    res = accessor.sparql_select(body=_body, repo_name=_repositorio)
+    res = json.loads(res)
+    print(res)
+
+    #listArtistas = []
+    art = res['results']['bindings'][0]['banda']['value']
+    for a in res['results']['bindings']:
+        if a['outras']['value'] != art:
+            query_insert = """
+                        insert data {<%s> foaf:knows <%s>}
+                    """ % (art, a['outras']['value'])
+            #listArtistas.append(a['outras']['value'])
+        _body = {"update": query_insert}
+        res1 = accessor.sparql_update(body=_body, repo_name=_repositorio)
+
+
+
+def knowArtists(request):
+    info = dict()
+    if 'ArtistName' in request.POST:
+        artistNome = request.POST['ArtistName']
+        print(artistNome)
+
+        if artistNome == "":
+            tparams = {
+                'info': info,
+                'frase': "Artists",
+                'erro': True
+            }
+            return render(request, "knowArtists.html", tparams)
+
+        insertKnowsArtist(artistNome)
+        query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                    PREFIX cs: <http://www.xpand.com/rdf/>
+                    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+                    select ?banda  ?anome ?img
+                    where
+                    {
+                        ?banda foaf:name "%s" .
+                        ?banda foaf:knows ?outra .
+                        ?outra foaf:name ?anome .
+                        ?outra foaf:Image ?img .
+                    }''' % (quote(artistNome))
+
+        _body = {"query": query}
+        res = accessor.sparql_select(body=_body, repo_name=_repositorio)
+        res = json.loads(res)
+        print(res)
+
+        for a in res['results']['bindings']:
+            info[unquote(a['anome']['value'])] = a['img']['value']
+
+    tparams = {
+        'info': info,
+        'frase': "Artists:",
+        'erro': False
+    }
+    return render(request, "knowArtists.html", tparams)
+
+
 def myPlayList(request):
     return None
     # input = "xquery <root>{for $a in collection('SpotifyPlaylist')//playlistDemo return $a }</root>"
@@ -310,7 +390,6 @@ def delete(request):
     # session.execute(delete)
     #
     # return redirect(myPlayList)
-
 
 # def pageRSS(request):
 #     url = 'https://pitchfork.com/rss/news/'
