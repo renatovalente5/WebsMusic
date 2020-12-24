@@ -10,7 +10,7 @@ from urllib.parse import unquote, quote
 from lxml import etree
 import xmltodict
 # import requests
-# import random
+import random
 # from lxml import etree
 # from urllib.request import urlopen
 # import datetime
@@ -24,7 +24,7 @@ accessor = GraphDBApi(client)
 # Create your views here.
 
 def home(request):
-    return HttpResponse("GOOD LUCK")
+    #return HttpResponse("GOOD LUCK")
     # input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:home()"
     # query = session.execute(input)
     # # print(query)
@@ -42,25 +42,39 @@ def home(request):
     #             info[c["name"]]["artistas"][art["name"]] = art["id"]
     #     else:
     #         info[c["name"]]["artistas"][c["artista"]["name"]] = c["artista"]["id"]
-    #
-    # url = 'https://pitchfork.com/rss/news/'
-    # resp = requests.get(url)
-    # rss = dict()
-    # qrss = xmltodict.parse(resp.content)
-    # print(qrss)
-    # for k in range(3):
-    #     r = random.choice(qrss["rss"]["channel"]["item"])
-    #     print(r)
-    #     rss[r["title"]] = dict()
-    #     rss[r["title"]]["thumbnail"] = r["media:thumbnail"]["@url"]
-    #     rss[r["title"]]["link"] = r["link"]
-    #
-    # tparams = {
-    #     'tracks': info,
-    #     'rss': rss,
-    #     'frase': "Home:",
-    # }
-    # return render(request, "home.html", tparams)
+
+    query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                    PREFIX cs: <http://www.xpand.com/rdf/>
+                    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    
+                    select ?id ?tname ?aname ?youtube
+                    where { 
+                        ?id rdf:type cs:Track .
+                        ?id foaf:name ?tname .
+                        ?id cs:youtubeVideo ?youtube .
+                        ?id cs:MusicArtist ?artist .
+                        ?artist foaf:name ?aname 
+                        
+                    }'''
+
+    _body = {"query": query}
+    res = accessor.sparql_select(body=_body, repo_name=_repositorio)
+    res = json.loads(res)
+    print(res)
+    info = dict()
+
+    for i in range(8):
+        m = random.choice(res['results']['bindings'])
+        info[unquote(m['tname']['value'])] = dict()
+        info[unquote(m['tname']['value'])]['artista'] = unquote(m['aname']['value'])
+        info[unquote(m['tname']['value'])]['url'] = "https://www.youtube.com/watch?v=" + unquote(m['youtube']['value'])
+
+    tparams = {
+        'tracks': info,
+        'frase': "Songs",
+    }
+    return render(request, "home.html", tparams)
 
 
 def musicas(request):
@@ -80,7 +94,7 @@ def musicas(request):
     _body = {"query": query}
     res = accessor.sparql_select(body=_body, repo_name=_repositorio)
     res = json.loads(res)
-    print(res);
+   # print(res);
     info = dict()
 
     for m in res['results']['bindings']:
@@ -110,7 +124,7 @@ def artist_tracks(request):
     _body = {"query": query}
     res = accessor.sparql_select(body=_body, repo_name=_repositorio)
     res = json.loads(res)
-    print(res)
+    #print(res)
     info = dict()
     for t in res['results']['bindings']:
         info[unquote(t['music']['value'])] = "https://www.youtube.com/embed/"+t['video']['value']
@@ -137,7 +151,7 @@ def artistas(request):
     _body = {"query" : query}
     res = accessor.sparql_select(body=_body, repo_name=_repositorio)
     res = json.loads(res)
-    print(res);
+    #print(res);
     info = dict()
     for a in res['results']['bindings']:
         temp = dict()
@@ -146,7 +160,7 @@ def artistas(request):
         info[unquote(a['aname']['value'])] = temp
         #info[a['id']['value']] = unquote(a['aname']['value'])
 
-    print(info)
+    #print(info)
     tparams = {
         'info': info,
         'frase': "Artistas:",
@@ -174,7 +188,7 @@ def albums(request):
     _body = {"query": query}
     res = accessor.sparql_select(body=_body, repo_name=_repositorio)
     res = json.loads(res)
-    print(res);
+   # print(res);
     info = dict()
     for a in res['results']['bindings']:
         temp = dict()

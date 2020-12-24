@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>PlaylistOnTheWeb</title>
+    <title>WebsMusic</title>
 
     {% load static %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -35,7 +35,7 @@
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="/home">PlaylistOnTheWeb</a>
+      <a class="navbar-brand" href="/home">WebsMusic</a>
 
       <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -81,8 +81,8 @@ and is wrapped around the whole page content, except for the footer in this exam
 
   <!-- Header -->
   <header class="w3-container w3-center w3-padding-48 w3-white">
-    <h1 class="w3-xxxlarge"><b>PlayList On The WEB</b></h1>
-    <h6>Discover <span class="w3-tag">Spotify PlayList</span></h6>
+    <h1 class="w3-xxxlarge"><b>WebsMusic</b></h1>
+    <h6>Discover the variety of the <span class="w3-tag">Webs Music</span></h6>
   </header>
 
   <!-- Image header -->
@@ -102,66 +102,67 @@ and is wrapped around the whole page content, except for the footer in this exam
     <div class="w3-col l8 s12">
 
       <!-- Blog entry -->
-      <div class="w3-container w3-white w3-margin w3-padding-large">
-          <div class="w3-center">
-            <h3>News</h3>
-             <br />
-          </div>
-          <div class="w3-justify">
-            <div id="myCarousel" class="carousel slide" data-ride="carousel">
-              <!-- Indicators -->
-              <ol class="carousel-indicators">
-                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                <li data-target="#myCarousel" data-slide-to="1"></li>
-                <li data-target="#myCarousel" data-slide-to="2"></li>
-              </ol>
+{#      <div class="w3-container w3-white w3-margin w3-padding-large">#}
+{#          <div class="w3-center">#}
+{#            <h3>News</h3>#}
+{#             <br />#}
+{#          </div>#}
+{#          <div class="w3-justify">#}
+{#            <div id="myCarousel" class="carousel slide" data-ride="carousel">#}
+{#              <!-- Indicators -->#}
+{#              <ol class="carousel-indicators">#}
+{#                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>#}
+{#                <li data-target="#myCarousel" data-slide-to="1"></li>#}
+{#                <li data-target="#myCarousel" data-slide-to="2"></li>#}
+{#              </ol>#}
+{##}
+{#                  <!-- Wrapper for slides -->#}
+{#                  <div class="carousel-inner">#}
+{#                  {% for title,dados in  rss.items %}#}
+{#                      {% if forloop.counter == 1 %}#}
+{#                        <div class="item active">#}
+{#                             <div class="header-text hidden-xs">#}
+{#                                <div class="col-md-12 text-center">#}
+{#                                    <h2>#}
+{#                                        <span><strong><a href="{{ dados.link }}" style="color: black" target="_blank">{{ title }}</a></strong></span>#}
+{#                                    </h2>#}
+{#                                    <br>#}
+{#                                </div>#}
+{#                            </div><!-- /header-text -->#}
+{#                            <img src="{{ dados.thumbnail }}" alt="{{ title }}">#}
+{#                        </div>#}
+{#                      {% else %}#}
+{#                          <div class="item">#}
+{##}
+{#                             <div class="header-text hidden-xs">#}
+{#                                <div class="col-md-12 text-center">#}
+{#                                    <h2>#}
+{#                                        <span><strong><a href="{{ dados.link }}" style="color: black" target="_blank">{{ title }}</a></strong></span>#}
+{#                                    </h2>#}
+{#                                    <br>#}
+{#                                </div>#}
+{#                            </div><!-- /header-text -->#}
+{#                            <img src="{{ dados.thumbnail }}" alt="{{ title }}">#}
+{##}
+{#                        </div>#}
+{#                      {% endif %}#}
+{#                      <br />#}
+{#                  {% endfor %}#}
+{#                  </div>#}
+{##}
+{#              <!-- Left and right controls -->#}
+{#              <a class="left carousel-control" href="#myCarousel" data-slide="prev">#}
+{#                <span class="glyphicon glyphicon-chevron-left"></span>#}
+{#              </a>#}
+{#              <a class="right carousel-control" href="#myCarousel" data-slide="next">#}
+{#                <span class="glyphicon glyphicon-chevron-right"></span>#}
+{#              </a>#}
+{#            </div>#}
+{##}
+{#        </div>#}
+{##}
+{#        </div>#}
 
-                  <!-- Wrapper for slides -->
-                  <div class="carousel-inner">
-                  {% for title,dados in  rss.items %}
-                      {% if forloop.counter == 1 %}
-                        <div class="item active">
-                             <div class="header-text hidden-xs">
-                                <div class="col-md-12 text-center">
-                                    <h2>
-                                        <span><strong><a href="{{ dados.link }}" style="color: black" target="_blank">{{ title }}</a></strong></span>
-                                    </h2>
-                                    <br>
-                                </div>
-                            </div><!-- /header-text -->
-                            <img src="{{ dados.thumbnail }}" alt="{{ title }}">
-                        </div>
-                      {% else %}
-                          <div class="item">
-
-                             <div class="header-text hidden-xs">
-                                <div class="col-md-12 text-center">
-                                    <h2>
-                                        <span><strong><a href="{{ dados.link }}" style="color: black" target="_blank">{{ title }}</a></strong></span>
-                                    </h2>
-                                    <br>
-                                </div>
-                            </div><!-- /header-text -->
-                            <img src="{{ dados.thumbnail }}" alt="{{ title }}">
-
-                        </div>
-                      {% endif %}
-                      <br />
-                  {% endfor %}
-                  </div>
-
-              <!-- Left and right controls -->
-              <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left"></span>
-              </a>
-              <a class="right carousel-control" href="#myCarousel" data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right"></span>
-              </a>
-            </div>
-
-        </div>
-
-      </div>
 
         <!-- Blog entry -->
       <div class="w3-container w3-white w3-margin w3-padding-large">
@@ -199,7 +200,7 @@ and is wrapped around the whole page content, except for the footer in this exam
       <div class="w3-white w3-margin">
         <div class="w3-container w3-black">
           <h4>This Project</h4>
-            <p>A project made in Django and BaseX that displays information retrieved from Spotify's API on a Web Application.</p>
+            <p>A project made in Django and GraphDB that displays information retrieved from LastFm's API on a Web Application.</p>
              <p> Project made for the course EDC from MSc in Computer and Telematics Engineering at Universidade de Aveiro.</p>
         </div>
       </div>
@@ -214,12 +215,10 @@ and is wrapped around the whole page content, except for the footer in this exam
           {% for name,dados in tracks.items %}
               <ul class="w3-ul w3-hoverable w3-white">
                   <li class="w3-padding-16">
-                <img src="{{ dados.imagem }}" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+{#                <img src="{{ dados.imagem }}" alt="Image" class="w3-left w3-margin-right" style="width:50px">#}
                 <a class="w3-large" href="{{ dados.url }}" target="_blank"> {{ name }}</a>
                 <br />
-                    {% for nome,id in dados.artistas.items %}
-                        <a href="{% url 'artistTracks' %}?id={{ id }}" target="_blank">{{ nome }}</a>
-                    {% endfor %}
+                      <a href="{% url 'artistTracks' %}?id={{ dados.artista }}" target="_blank">{{ dados.artista }}</a>
                    </li>
                </ul>
           {% endfor %}
@@ -249,7 +248,7 @@ and is wrapped around the whole page content, except for the footer in this exam
     <!-- Footer -->
     <footer class="page-footer font-small special-color-dark pt-4">
       <div class="footer-copyright text-center py-3">© 2020 Copyright:
-        <a> PlaylistOnTheWeb</a>
+        <a> WebsMusic</a>
       </div>
     </footer>
     <!-- Footer -->
