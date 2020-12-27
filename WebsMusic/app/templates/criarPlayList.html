@@ -18,12 +18,8 @@
                     <th style="max-width: 100px;">
                         <input class="btn btn-success" type="submit" name="Submit!" value="CREATE" onclick="alertPlayList()"/>
                     </th>
-
                     <th width="700px;">{{ frase }} </th>
-
-                    {% if artistas %}
-                        <th>Artist</th>
-                    {% endif %}
+                    <th>Artist</th>
                 </tr>
             </thead>
             <tbody id="data-table">
@@ -34,17 +30,10 @@
                         <input type="checkbox" id="var{{ forloop.counter }}" name="nameMusica" value="{{ dados.id }}">
                         </label>
                     </td>
+                    <td> {{ name }} </td>
                     <td>
-                        <img src="{{ dados.imagem }}"/> <a href="{{ dados.url }}" target="_blank"> {{ name }}</a>
+                        <a href="{% url 'artistTracks' %}?id={{ dados.artista }}">{{ dados.artista }}</a>
                     </td>
-                    {% if artistas %}
-                        <td>
-                            {% for nome,id in dados.artistas.items %}
-                                <a href="{% url 'artistTracks' %}?id={{ id }}">{{ nome }}</a>
-                                <br />
-                            {% endfor %}
-                        </td>
-                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>
