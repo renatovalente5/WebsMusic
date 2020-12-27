@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:cs="http://www.xpand.com/rdf/"
+         about="{{ uri}}" typeof="cs:Album" >
+        Album name: <span property="foaf:name">{{ name }}</span>
+        Artista: <span about="{{ idArtista }}" rel="foaf:name">{{ aname }}</span><br>
+        {% if tags %}
+            Tags:
+            <ul>
+                {% for nome, id in tags.items %}
+                    <li>
+                          <span about="{{ id }}" rel="foaf:name">{{ nome }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        Biography: <span property="cs:biography"> {{ bio }}</span><br>
+        Data: <span property="cs:dataPublished"> {{ data }}</span><br>
+        Genre : <span property="cs:genre">{{ genero }}</span><br>
+        {% if nextAlbum %}
+            Next Album : <span property="cs:nextAlbum">{{nextAlbum}}</span><br>
+        {% endif %}
+        {% if prevAlbum %}
+            Previous Album : <span property="cs:nextAlbum">{{prevAlbum}}</span><br>
+        {% endif %}
+        {% if producer %}
+            Producer: <span property="cs:nextAlbum">{{producer}}</span><br>
+        {% endif %}
+        PlayCount: <span property="cs:playCount">42719617</span><br>
+        {% if recorders %}
+        Recorders :
+        <ul>
+            {% for r in recorders %}
+                <li>
+                    <span property="cs:recoder">{{ r }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% if simAlbums %}
+        Similar Albums:
+            <ul rel="cs:similarAlbum">
+                {% for Aname, dados in simAlbums.items %}
+                    <li>
+                        <a href="{% url 'albumDetails' %}?id={{ dados.id }}" about="{{ dados.uri }}" typeof="cs:Album"
+                              property="foaf:name">{{ Aname}}</a>
+                    </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        Imagem: <img property="foaf:Image" src="{{ img}}"><br>
+
+
+    </div>
+{% endblock %}

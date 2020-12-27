@@ -26,6 +26,7 @@ urlpatterns = [
     path('criarPlayList/', views.criarPlayList, name='criarPlayList'),
     path('artistTracks/', views.artist_tracks, name='artistTracks'),
     path('albums/', views.albums, name='albums'),
+    path('albumDetails/', views.albumInfo, name='albumDetails'),
     path('myPlayList/', views.myPlayList, name='myPlayList'),
     #path('pageRSS/', views.pageRSS, name='pageRSS'),
     path('delete/', views.delete, name='delete'),
