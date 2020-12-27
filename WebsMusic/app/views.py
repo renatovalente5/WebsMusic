@@ -160,7 +160,7 @@ def albums(request):
                 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
                 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
                 
-                select ?albumName ?aname ?producer ?recorder ?data ?count
+                select ?albumName ?aname ?producer ?recorder ?data ?count ?img
                 where {
                     ?album rdf:type cs:Album .
                     ?album foaf:name ?albumName .
@@ -170,6 +170,7 @@ def albums(request):
                     ?album cs:recorder ?recorder .
                     ?album cs:datePublished ?data .
                     ?album cs:playCount ?count .
+                    ?album foaf:Image ?img .
                 }'''
 
     _body = {"query": query}
@@ -185,6 +186,7 @@ def albums(request):
         temp['data'] = a['data']['value']
         temp['streams'] = a['count']['value']
         temp['nome'] = a['albumName']['value']
+        temp['img'] = a['img']['value']
         info[unquote(a['albumName']['value'])] = temp
         # info[a['id']['value']] = unquote(a['aname']['value'])
 
