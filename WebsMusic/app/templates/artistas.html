@@ -1,21 +1,14 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container tableFixHead">
-    <table class="table table-fixed">
-        <thead class="thead-dark">
-            <tr>
-                <th width="700px;">{{ frase }}</th>
-            </tr>
-        </thead>
-        <tbody id="data-table">
+
+<h2>{{ frase }}</h2>
+    <div class="content">
+    <ul id="myTable" class="breadcrumb">
         {% for name, dados in info.items %}
-            <tr>
-                <td><img src="{{ dados.img }}"/> <a href="{% url 'artistTracks' %}?id={{ name }}"> {{ name }}</a>  </td>
-            </tr>
+                <li><img style="width: 120px; height: 120px;" src="{{ dados.img }}"/><a href="{% url 'artistTracks' %}?id={{ name}}" target="_blank"> {{ name }}</a></li>
         {% endfor %}
-        </tbody>
-    </table>
+    </ul>
 </div>
 
 {% endblock %}

@@ -99,72 +99,76 @@ and is wrapped around the whole page content, except for the footer in this exam
     </div>-->
   </header>
 
+
+
   <!-- Grid -->
   <div class="w3-row w3-padding w3-border">
     <!-- Blog entries -->
     <div class="w3-col l8 s12">
 
       <!-- Blog entry -->
-{#      <div class="w3-container w3-white w3-margin w3-padding-large">#}
-{#          <div class="w3-center">#}
-{#            <h3>News</h3>#}
-{#             <br />#}
-{#          </div>#}
-{#          <div class="w3-justify">#}
-{#            <div id="myCarousel" class="carousel slide" data-ride="carousel">#}
-{#              <!-- Indicators -->#}
-{#              <ol class="carousel-indicators">#}
-{#                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>#}
-{#                <li data-target="#myCarousel" data-slide-to="1"></li>#}
-{#                <li data-target="#myCarousel" data-slide-to="2"></li>#}
-{#              </ol>#}
-{##}
-{#                  <!-- Wrapper for slides -->#}
-{#                  <div class="carousel-inner">#}
-{#                  {% for title,dados in  rss.items %}#}
-{#                      {% if forloop.counter == 1 %}#}
-{#                        <div class="item active">#}
-{#                             <div class="header-text hidden-xs">#}
-{#                                <div class="col-md-12 text-center">#}
-{#                                    <h2>#}
-{#                                        <span><strong><a href="{{ dados.link }}" style="color: black" target="_blank">{{ title }}</a></strong></span>#}
-{#                                    </h2>#}
-{#                                    <br>#}
-{#                                </div>#}
-{#                            </div><!-- /header-text -->#}
-{#                            <img src="{{ dados.thumbnail }}" alt="{{ title }}">#}
-{#                        </div>#}
-{#                      {% else %}#}
-{#                          <div class="item">#}
-{##}
-{#                             <div class="header-text hidden-xs">#}
-{#                                <div class="col-md-12 text-center">#}
-{#                                    <h2>#}
-{#                                        <span><strong><a href="{{ dados.link }}" style="color: black" target="_blank">{{ title }}</a></strong></span>#}
-{#                                    </h2>#}
-{#                                    <br>#}
-{#                                </div>#}
-{#                            </div><!-- /header-text -->#}
-{#                            <img src="{{ dados.thumbnail }}" alt="{{ title }}">#}
-{##}
-{#                        </div>#}
-{#                      {% endif %}#}
-{#                      <br />#}
-{#                  {% endfor %}#}
-{#                  </div>#}
-{##}
-{#              <!-- Left and right controls -->#}
-{#              <a class="left carousel-control" href="#myCarousel" data-slide="prev">#}
-{#                <span class="glyphicon glyphicon-chevron-left"></span>#}
-{#              </a>#}
-{#              <a class="right carousel-control" href="#myCarousel" data-slide="next">#}
-{#                <span class="glyphicon glyphicon-chevron-right"></span>#}
-{#              </a>#}
-{#            </div>#}
-{##}
-{#        </div>#}
-{##}
-{#        </div>#}
+      <div class="w3-container w3-white w3-margin w3-padding-large">
+          <div class="w3-center">
+            <h3>Popular Music Videos</h3>
+             <br />
+          </div>
+          <div class="w3-justify">
+
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+              <!-- Indicators -->
+              <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+              </ol>
+
+                  <!-- Wrapper for slides -->
+                  <div class="carousel-inner">
+                  {% for name,dados in tracks.items %}
+                      {% if forloop.counter == 1 %}
+                        <div class="item active">
+                             <div class="header-text hidden-xs">
+                                <div class="col-md-12 text-center">
+                                    <h2>
+                                        <span><strong><a href="{{ dados.url }}" style="color: black" target="_blank">{{ name }}</a></strong></span>
+                                    </h2>
+                                    <br>
+                                </div>
+                            <iframe src="{{ dados.embed }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></td>
+
+                            </div><!-- /header-text -->
+
+                        </div>
+                      {% else %}
+                          <div class="item">
+
+                             <div class="header-text hidden-xs">
+                                <div class="col-md-12 text-center">
+                                    <h2>
+                                        <span><strong><a href="{{ dados.url }}" style="color: black" target="_blank">{{ name }}</a></strong></span>
+                                    </h2>
+                                    <br>
+                                </div>
+                            </div><!-- /header-text -->
+                            <iframe src="{{ dados.embed }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></td>
+                        </div>
+                      {% endif %}
+                      <br />
+                  {% endfor %}
+                  </div>
+
+              <!-- Left and right controls -->
+              <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+              </a>
+              <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+              </a>
+            </div>
+
+        </div>
+
+        </div>
 
 
         <!-- Blog entry -->
@@ -269,6 +273,39 @@ and is wrapped around the whole page content, except for the footer in this exam
 </html>
 
 <script>
+    $(document).ready(function () {
+    var pos = 0,
+        slides = $('.slide'),
+        numOfSlides = slides.length;
+
+    function nextSlide() {
+        // `[]` returns a vanilla DOM object from a jQuery object/collection
+        slides[pos].video.stopVideo()
+        slides.eq(pos).animate({ left: '-100%' }, 500);
+        pos = (pos >= numOfSlides - 1 ? 0 : ++pos);
+        slides.eq(pos).css({ left: '100%' }).animate({ left: 0 }, 500);
+    }
+
+    function previousSlide() {
+        slides[pos].video.stopVideo()
+        slides.eq(pos).animate({ left: '100%' }, 500);
+        pos = (pos == 0 ? numOfSlides - 1 : --pos);
+        slides.eq(pos).css({ left: '-100%' }).animate({ left: 0 }, 500);
+    }
+
+    $('.left').click(previousSlide);
+    $('.right').click(nextSlide);
+})
+
+    function onYouTubeIframeAPIReady() {
+        $('.slide').each(function (index, slide) {
+            // Get the `.video` element inside each `.slide`
+            var iframe = $(slide).find('.video')[0]
+            // Create a new YT.Player from the iFrame, and store it on the `.slide` DOM object
+            slide.video = new YT.Player(iframe)
+        })
+    }
+
     //Filter Search
     $('#myInput').on('keyup', function () {
         var value = $(this).val().toLowerCase();

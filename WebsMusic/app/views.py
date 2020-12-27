@@ -26,25 +26,6 @@ accessor = GraphDBApi(client)
 # Create your views here.
 
 def home(request):
-    # return HttpResponse("GOOD LUCK")
-    # input = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:home()"
-    # query = session.execute(input)
-    # # print(query)
-    # info = dict()
-    # res = xmltodict.parse(query)
-    # # print(res)
-    # for i in range(8):
-    #     c = random.choice(res["root"]["elem"])
-    #     info[c["name"]] = dict()
-    #     info[c["name"]]["url"] = c["spotify"]
-    #     info[c["name"]]["imagem"] = c["url"][2]
-    #     info[c["name"]]["artistas"] = dict()
-    #     if isinstance(c["artista"], list):
-    #         for art in c["artista"]:
-    #             info[c["name"]]["artistas"][art["name"]] = art["id"]
-    #     else:
-    #         info[c["name"]]["artistas"][c["artista"]["name"]] = c["artista"]["id"]
-
     query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                     PREFIX cs: <http://www.xpand.com/rdf/>
                     PREFIX foaf: <http://xmlns.com/foaf/0.1/>
@@ -71,6 +52,7 @@ def home(request):
         info[unquote(m['tname']['value'])] = dict()
         info[unquote(m['tname']['value'])]['artista'] = unquote(m['aname']['value'])
         info[unquote(m['tname']['value'])]['url'] = "https://www.youtube.com/watch?v=" + unquote(m['youtube']['value'])
+        info[unquote(m['tname']['value'])]['embed'] = "https://www.youtube.com/embed/" + unquote(m['youtube']['value'])
 
     tparams = {
         'tracks': info,
@@ -315,8 +297,8 @@ def insertKnowsArtist(artista):
                         insert data {<%s> foaf:knows <%s>}
                     """ % (art, a['outras']['value'])
             #listArtistas.append(a['outras']['value'])
-        _body = {"update": query_insert}
-        res1 = accessor.sparql_update(body=_body, repo_name=_repositorio)
+            _body = {"update": query_insert}
+            res1 = accessor.sparql_update(body=_body, repo_name=_repositorio)
 
 
 
