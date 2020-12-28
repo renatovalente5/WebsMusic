@@ -25,7 +25,7 @@
                         <span class="caret"></span></button>
                      </td>
                     <td style="width: 250px;">
-                        <button class="btn btn-outline-danger" type="button" onclick="location.href='http://127.0.0.1:8000/delete?id='{{ dados.id }}" onmouseover="this.style.color='white';" onmouseout="this.style.color='';">
+                        <button class="btn btn-outline-danger" type="button" onclick="location.href='http://127.0.0.1:8000/delete?id='+{{ forloop.counter}}" onmouseover="this.style.color='white';" onmouseout="this.style.color='';">
                             Remove
                         </button>
                     </td>

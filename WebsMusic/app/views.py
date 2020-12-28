@@ -562,26 +562,37 @@ def myPlayList(request):
 
 
 def delete(request):
-    return None
-    # id = request.GET['id']
-    # print(id)
-    # delete = "xquery import module namespace funcsPlaylist = 'com.funcsPlaylist.my.index'; funcsPlaylist:delete-playlist({})".format(id)
-    # session.execute(delete)
-    #
-    # return redirect(myPlayList)
+    id = int(request.GET['id']) - 1
+    query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX cs: <http://www.xpand.com/rdf/>
+                PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
-# def pageRSS(request):
-#     url = 'https://pitchfork.com/rss/news/'
-#     resp = requests.get(url)
-#
-#     xml = etree.fromstring(resp.content)
-#
-#     xslt_file = etree.parse("files/pageRSS.xsl")
-#     transform = etree.XSLT(xslt_file)
-#     html = transform(xml)
-#
-#     tparams = {
-#         'pageRSS': html,
-#         'frase': "Page RSS:",
-#     }
-#     return render(request, "pageRSS.html", tparams)
+                select ?p ?nome 
+                where{
+                    ?p rdf:type cs:Playlist .
+                    ?p foaf:name ?nome .
+                }'''
+    _body = {"query": query}
+    res = accessor.sparql_select(body=_body, repo_name=_repositorio)
+    res = json.loads(res)
+
+    playlists = []
+    for a in res['results']['bindings']:
+        playlists.append(a["p"]["value"])
+
+    print(playlists[id])
+
+    query_delete = '''
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX cs: <http://www.xpand.com/rdf/>
+
+            delete data {
+                <%s> rdf:type cs:Playlist
+            } 
+            ''' % playlists[id]
+
+    _body = {"update": query_delete}
+    res = accessor.sparql_update(body=_body, repo_name=_repositorio)
+
+    return redirect(myPlayList)
+

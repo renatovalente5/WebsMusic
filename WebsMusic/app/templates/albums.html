@@ -19,7 +19,7 @@
         {% for name, dados in albums.items %}
             <tr>
                 <td style="width: 30px;"><img style="width: 80px; height: 80px;" src="{{ dados.img }}"/> </td>
-                <td style="width: 300px;"><a href="{% url 'albumDetails' %}?id={{ dados.nome }}"> {{ name }}  </a></td>
+                <td style="width: 300px;"><a href="{% url 'albumDetails' %}?id={{ dados.nome }}" target="_blank"> {{ name }}  </a></td>
                 <td style="width: 300px;">
                         <a href="{% url 'artistTracks' %}?id={{ dados.artista }}">{{ dados.artista }}</a>
                         <br />
