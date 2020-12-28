@@ -113,7 +113,11 @@ def artist_tracks(request):
     # print(res)
     info = dict()
     for t in res['results']['bindings']:
-        info[unquote(t['music']['value'])] = "https://www.youtube.com/embed/" + t['video']['value']
+        temp = dict()
+        temp['img'] = "https://img.youtube.com/vi/" + t['video']['value'] + "/0.jpg"
+        temp['video'] = "https://www.youtube.com/embed/" + t['video']['value']
+        temp['link'] = "https://www.youtube.com/watch?v=" + t['video']['value']
+        info[unquote(t['music']['value'])] = temp
     tparams = {
         'tracks': info,
         'frase': "Músicas do Artista: " + id

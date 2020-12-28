@@ -6,17 +6,18 @@
     <table class="table table-fixed">
         <thead class="thead-dark">
             <tr>
-                <th width="500px;">{{ frase }}</th>
-
-                <th>Sample</th>
+                <th colspan="2" width="500px">{{ frase }}</th>
+                <th >Sample</th>
             </tr>
         </thead>
         <tbody id="data-table">
         {% for name, music in tracks.items %}
             <tr>
-                <td>{{ name }} </td>
+                <td style="text-align:right; width: 142px;"><img src="{{ music.img }}" width="120" height="90"></td>
+                <td style="text-align: left; padding-left: 0;"><a href="{{ music.link }}" target="_blank" >{{ name }}</a></td>
                 <td>
-                    <iframe width="560" height="315" src="{{ music }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></td>
+                    <iframe width="300" height="180" src="{{ music.video }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
