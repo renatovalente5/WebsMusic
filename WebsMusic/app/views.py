@@ -385,7 +385,7 @@ def criarPlayList(request):
             res = accessor.sparql_select(body=_body, repo_name=_repositorio)
             res = json.loads(res)
 
-            id = "http://www.xpand.com/playlist/" + playlistNome
+            id = "http://www.xpand.com/playlist/" + quote(playlistNome)
 
             for i in res['results']['bindings']:
                 if id == i['p']['value']:
@@ -532,14 +532,17 @@ def myPlayList(request):
                     PREFIX cs: <http://www.xpand.com/rdf/>
                     PREFIX foaf: <http://xmlns.com/foaf/0.1/>
     
-                    select ?nome ?numItems ?data ?track ?tname
+                    select ?nome ?numItems ?data ?track ?tname ?idYT 
                     where{
                         <%s> rdf:type cs:Playlist .
                         <%s> foaf:name ?nome .
                         <%s> cs:NumItems ?numItems .
                         <%s> cs:datePublished ?data .
-                        <%s> cs:Track ?track .
-                        ?track foaf:name ?tname .
+                        optional{
+                            <%s> cs:Track ?track .
+                            ?track foaf:name ?tname .
+                            ?track cs:youtubeVideo ?idYT .
+                        }
                     }''' % (p['p']['value'], p['p']['value'], p['p']['value'], p['p']['value'], p['p']['value'])
         _body = {"query": query}
         res1 = accessor.sparql_select(body=_body, repo_name=_repositorio)
@@ -552,7 +555,13 @@ def myPlayList(request):
         info[p["p"]["value"]]["numItems"] = key["numItems"]["value"]
         info[p["p"]["value"]]["tracks"] = dict()
         for t in res1['results']['bindings']:
-            info[p["p"]["value"]]["tracks"][t["track"]["value"]] = unquote(t['tname']['value'])
+            if "track" in t.keys():
+                temp = dict()
+                temp['track'] = t['track']['value']
+                temp['tname'] = unquote(t['tname']['value'])
+                temp['idYT'] = "https://img.youtube.com/vi/" + t['idYT']['value'] + "/0.jpg"
+                info[p["p"]["value"]]["tracks"][t["track"]["value"]] = temp
+
     print(info)
     tparams = {
         'playlist': info,

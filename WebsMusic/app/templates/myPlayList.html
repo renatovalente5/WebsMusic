@@ -14,11 +14,11 @@
                     xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:cs="http://www.xpand.com/rdf/"
                      about="{{ id}}" typeof="cs:Playlist" >
                 <tr style="height: 130px; border-bottom:2px solid white;">
-                    <td style="width: 200px;">
-                        <strong><u ><i>NAME: </i><i property="foaf:name">{{ dados.name }}</i></u></strong> <br />
-                        <strong><u><i>ID: {{ id }}</i></u></strong> <br />
-                        <strong><u ><i>TRACKS: </i><i property="cs:NumItems">{{ dados.numItems }}</i></u></strong> <br />
-                        <strong><u ><i>DATE: </i><i property="cs:dataPublished">{{ dados.data }}</i></u></strong> <br />
+                    <td style="width: 330px;">
+                        <strong><u ><i>NAME:</i></u></strong> <i property="foaf:name"> {{ dados.name }}</i><br />
+                        <strong><u><i>ID:</i></u></strong> <i>{{ id }}</i><br />
+                        <strong><u ><i>TRACKS:</i></u></strong><i property="cs:NumItems"> {{ dados.numItems }}</i><br />
+                        <strong><u ><i>DATE:</i></u></strong><i property="cs:dataPublished"> {{ dados.data }}</i><br />
                     </td>
                      <td style="width: 120px;">
                         <button class="btn btn-outline-success dropdown-toggle" type="button" onclick="showHidenItens({{ forloop.counter  }} )">MUSICS
@@ -33,7 +33,7 @@
                         <ul rel="cs:Track">
                             {% for id,musica in dados.tracks.items %}
                                 <li>
-                                    <span  about="{{ id }}" typeof="cs:Track" property="foaf:name">{{ musica }}</span>
+                                    <img src="{{ musica.idYT }}" width="50" height="38"/><span  about="{{ id }}" typeof="cs:Track" property="foaf:name"> {{ musica.tname }}</span>
                                 </li>
                             <br/>
                             {% endfor %}
