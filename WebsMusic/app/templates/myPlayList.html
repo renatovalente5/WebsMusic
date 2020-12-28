@@ -5,7 +5,39 @@
 <h2>{{ frase }}</h2>
 
 <div class="content">
-    {{ playlist | safe}}
+    <table id="breadcrumb_album"  class="breadcrumb">
+            <thead></thead>
+            <tbody id="data-table">
+            {% for id,dados in playlist.items %}
+                <tr style="height: 130px; border-bottom:2px solid white;">
+                    <td style="width: 200px;">
+                        <strong><u><i>NAME: {{ dados.name }}</i></u></strong> <br />
+                        <strong><u><i>ID: {{ id }}</i></u></strong> <br />
+                        <strong><u><i>TRACKS: {{ dados.numItems }}</i></u></strong> <br />
+                        <strong><u><i>DATE: {{ dados.data }}</i></u></strong> <br />
+                    </td>
+                     <td style="width: 120px;">
+                        <button class="btn btn-outline-success dropdown-toggle" type="button" onclick="showHidenItens({{ forloop.counter  }} )">MUSICS
+                        <span class="caret"></span></button>
+                     </td>
+                    <td style="width: 250px;">
+                        <button class="btn btn-outline-danger" type="button" onclick="location.href='http://127.0.0.1:8000/delete?id='{{ dados.id }}" onmouseover="this.style.color='white';" onmouseout="this.style.color='';">
+                            Remove
+                        </button>
+                    </td>
+                     <td id="{{ forloop.counter }}" style="display:none" class="dropdown"><br />
+                        <ul>
+                            {% for musica in dados.tracks %}
+                                <li>
+                                    <span>{{ musica }}</span>
+                                </li>
+                            <br/>
+                            {% endfor %}
+                        </ul>
+                    </td>
+            {% endfor %}
+            </tbody>
+    </table>
 </div>
 
 {% endblock %}

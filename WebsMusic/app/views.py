@@ -366,11 +366,6 @@ def criarPlayList(request):
             }
             return render(request, "criarPlayList.html", tparams)
         else:
-            tparams = {
-                'tracks': info,
-                'frase': "Songs:",
-                'erro': False
-            }
 
             querysIDS = """
                         PREFIX cs: <http://www.xpand.com/rdf/>
@@ -382,7 +377,6 @@ def criarPlayList(request):
             _body = {"query": querysIDS}
             res = accessor.sparql_select(body=_body, repo_name=_repositorio)
             res = json.loads(res)
-
 
             id = "http://www.xpand.com/playlist/" + playlistNome
 
@@ -420,6 +414,12 @@ def criarPlayList(request):
                 # listArtistas.append(a['outras']['value'])
                 _body = {"update": query_de_insert}
                 res1 = accessor.sparql_update(body=_body, repo_name=_repositorio)
+
+            tparams = {
+                'tracks': info,
+                'frase': "Songs:",
+                'erro': False
+            }
 
             return render(request, "criarPlayList.html", tparams)
     else:
@@ -510,20 +510,47 @@ def knowArtists(request):
 
 
 def myPlayList(request):
-    return None
-    # input = "xquery <root>{for $a in collection('SpotifyPlaylist')//playlistDemo return $a }</root>"
-    # query = session.execute(input)
-    #
-    # xml = etree.fromstring(query)
-    # xslt_file = etree.parse("files/myPlayList.xsl")
-    # transform = etree.XSLT(xslt_file)
-    # html = transform(xml)
-    #
-    # tparams = {
-    #     'playlist': html,
-    #     'frase': "Playlists:",
-    # }
-    # return render(request, "myPlayList.html", tparams)
+    query = '''PREFIX cs: <http://www.xpand.com/rdf/>
+                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                select * where { 
+                    ?p rdf:type cs:Playlist
+                } '''
+    _body = {"query": query}
+    res = accessor.sparql_select(body=_body, repo_name=_repositorio)
+    res = json.loads(res)
+    print(res)
+    info = dict()
+    for p in res['results']['bindings']:
+        query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                    PREFIX cs: <http://www.xpand.com/rdf/>
+                    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    
+                    select ?nome ?numItems ?data ?track
+                    where{
+                        <%s> rdf:type cs:Playlist .
+                        <%s> foaf:name ?nome .
+                        <%s> cs:NumItems ?numItems .
+                        <%s> cs:datePublished ?data .
+                        <%s> cs:Track ?track
+                    }''' % (p['p']['value'], p['p']['value'], p['p']['value'], p['p']['value'], p['p']['value'])
+        _body = {"query": query}
+        res1 = accessor.sparql_select(body=_body, repo_name=_repositorio)
+        res1 = json.loads(res1)
+        print(res1)
+        key = res1['results']['bindings'][0]
+        info[p["p"]["value"]] = dict()
+        info[p["p"]["value"]]["name"] = key["nome"]["value"]
+        info[p["p"]["value"]]["data"] = key["data"]["value"]
+        info[p["p"]["value"]]["numItems"] = key["numItems"]["value"]
+        info[p["p"]["value"]]["tracks"] = []
+        for t in res1['results']['bindings']:
+            info[p["p"]["value"]]["tracks"].append(t["track"]["value"])
+    print(info)
+    tparams = {
+        'playlist': info,
+        'frase': "Playlists:",
+    }
+    return render(request, "myPlayList.html", tparams)
 
 
 def delete(request):
