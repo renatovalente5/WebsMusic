@@ -9,12 +9,16 @@
             <thead></thead>
             <tbody id="data-table">
             {% for id,dados in playlist.items %}
+                <div xmlns="http://www.w3.org/1999/xhtml"
+                    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                    xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:cs="http://www.xpand.com/rdf/"
+                     about="{{ id}}" typeof="cs:Playlist" >
                 <tr style="height: 130px; border-bottom:2px solid white;">
                     <td style="width: 200px;">
-                        <strong><u><i>NAME: {{ dados.name }}</i></u></strong> <br />
+                        <strong><u ><i>NAME: </i><i property="foaf:name">{{ dados.name }}</i></u></strong> <br />
                         <strong><u><i>ID: {{ id }}</i></u></strong> <br />
-                        <strong><u><i>TRACKS: {{ dados.numItems }}</i></u></strong> <br />
-                        <strong><u><i>DATE: {{ dados.data }}</i></u></strong> <br />
+                        <strong><u ><i>TRACKS: </i><i property="cs:NumItems">{{ dados.numItems }}</i></u></strong> <br />
+                        <strong><u ><i>DATE: </i><i property="cs:dataPublished">{{ dados.data }}</i></u></strong> <br />
                     </td>
                      <td style="width: 120px;">
                         <button class="btn btn-outline-success dropdown-toggle" type="button" onclick="showHidenItens({{ forloop.counter  }} )">MUSICS
@@ -26,15 +30,17 @@
                         </button>
                     </td>
                      <td id="{{ forloop.counter }}" style="display:none" class="dropdown"><br />
-                        <ul>
-                            {% for musica in dados.tracks %}
+                        <ul rel="cs:Track">
+                            {% for id,musica in dados.tracks.items %}
                                 <li>
-                                    <span>{{ musica }}</span>
+                                    <span  about="{{ id }}" typeof="cs:Track" property="foaf:name">{{ musica }}</span>
                                 </li>
                             <br/>
                             {% endfor %}
                         </ul>
                     </td>
+                </tr>
+                </div>
             {% endfor %}
             </tbody>
     </table>

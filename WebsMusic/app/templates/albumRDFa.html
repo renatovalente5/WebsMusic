@@ -13,7 +13,7 @@
                 <div class="col-9">
                     <b>Album Name:</b> <span property="foaf:name">{{ name }}</span> <br />
 
-                    <b>Artista:</b> <span about="{{ idArtista }}" rel="foaf:name">{{ aname }}</span><br />
+                    <b>Artista:</b> <span rel="cs:MusicArtist"><span about="{{ idArtista }}" property="foaf:name" typeof="cs:MusicArtist">{{ aname }}</span></span><br />
 
                     <b>Data:</b> <span property="cs:dataPublished"> {{ data }}</span><br>
                     <b>Genre:</b> <span property="cs:genre">{{ genero }}</span><br>
@@ -46,10 +46,10 @@
                 <div class="col-4">
                     {% if tags %}
                         <b>Tags:</b>
-                        <ul>
+                        <ul rel="cs:Tag">
                             {% for nome, id in tags.items %}
                                 <li>
-                                      <span about="{{ id }}" rel="foaf:name">{{ nome }}</span>
+                                      <span about="{{ id }}" property="foaf:name">{{ nome }}</span>
                                 </li>
                             {% endfor %}
                         </ul>

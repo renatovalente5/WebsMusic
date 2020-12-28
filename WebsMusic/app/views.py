@@ -164,14 +164,15 @@ def albums(request):
                 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
                 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
                 
-                select ?albumName ?aname ?producer ?recorder ?data ?count ?img
+                select ?albumName ?aname ?producer ?data ?count ?img
                 where {
                     ?album rdf:type cs:Album .
                     ?album foaf:name ?albumName .
                     ?album cs:MusicArtist ?idArt .
                     ?idArt foaf:name ?aname .
-                    ?album cs:producer ?producer .
-                    ?album cs:recorder ?recorder .
+                    optional{
+                        ?album cs:producer ?producer .
+                    }
                     ?album cs:datePublished ?data .
                     ?album cs:playCount ?count .
                     ?album foaf:Image ?img .
@@ -185,8 +186,10 @@ def albums(request):
     for a in res['results']['bindings']:
         temp = dict()
         temp['artista'] = unquote(a['aname']['value'])
-        temp['producer'] = unquote(a['producer']['value'])
-        temp['recorder'] = unquote(a['recorder']['value'])
+        if 'producer' in a.keys():
+            temp['producer'] = unquote(a['producer']['value'])
+        else:
+            temp['producer'] = None
         temp['data'] = a['data']['value']
         temp['streams'] = a['count']['value']
         temp['nome'] = a['albumName']['value']
@@ -529,13 +532,14 @@ def myPlayList(request):
                     PREFIX cs: <http://www.xpand.com/rdf/>
                     PREFIX foaf: <http://xmlns.com/foaf/0.1/>
     
-                    select ?nome ?numItems ?data ?track
+                    select ?nome ?numItems ?data ?track ?tname
                     where{
                         <%s> rdf:type cs:Playlist .
                         <%s> foaf:name ?nome .
                         <%s> cs:NumItems ?numItems .
                         <%s> cs:datePublished ?data .
-                        <%s> cs:Track ?track
+                        <%s> cs:Track ?track .
+                        ?track foaf:name ?tname .
                     }''' % (p['p']['value'], p['p']['value'], p['p']['value'], p['p']['value'], p['p']['value'])
         _body = {"query": query}
         res1 = accessor.sparql_select(body=_body, repo_name=_repositorio)
@@ -546,9 +550,9 @@ def myPlayList(request):
         info[p["p"]["value"]]["name"] = key["nome"]["value"]
         info[p["p"]["value"]]["data"] = key["data"]["value"]
         info[p["p"]["value"]]["numItems"] = key["numItems"]["value"]
-        info[p["p"]["value"]]["tracks"] = []
+        info[p["p"]["value"]]["tracks"] = dict()
         for t in res1['results']['bindings']:
-            info[p["p"]["value"]]["tracks"].append(t["track"]["value"])
+            info[p["p"]["value"]]["tracks"][t["track"]["value"]] = unquote(t['tname']['value'])
     print(info)
     tparams = {
         'playlist': info,

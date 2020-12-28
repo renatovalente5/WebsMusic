@@ -30,12 +30,11 @@
                 </td>
                 <td id="{{ forloop.counter }}" style="display:none" class="dropdown"><br />
                     <ul>
+                         {% if dados.producer %}
                         <li>
                             Producer: {{ dados.producer }}
                         </li>
-{#                        <li>#}
-{#                            Recorder: {{ dados.recorder }}#}
-{#                        </li>#}
+                        {% endif %}
                         <li>
                             Data: {{ dados.data }}
                         </li>
