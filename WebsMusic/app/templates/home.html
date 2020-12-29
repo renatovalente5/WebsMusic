@@ -125,6 +125,8 @@ and is wrapped around the whole page content, except for the footer in this exam
                   <!-- Wrapper for slides -->
                   <div class="carousel-inner">
                   {% for name,dados in tracks.items %}
+                      {% if forloop.counter < 4 %}
+
                       {% if forloop.counter == 1 %}
                         <div class="item active">
                              <div class="header-text hidden-xs">
@@ -135,7 +137,7 @@ and is wrapped around the whole page content, except for the footer in this exam
                                     <br>
                                 </div>
                              </div><!-- /header-text -->
-                            <iframe src="{{ dados.embed }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></td>
+                            <iframe src="{{ dados.embed }}" frameborder="0" width="100%" height="350px" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></td>
                         </div>
                       {% else %}
                           <div class="item">
@@ -148,8 +150,9 @@ and is wrapped around the whole page content, except for the footer in this exam
                                     <br>
                                 </div>
                             </div><!-- /header-text -->
-                            <iframe src="{{ dados.embed }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></td>
+                            <iframe src="{{ dados.embed }}" frameborder="0" width="100%" height="350px" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></td>
                         </div>
+                      {% endif %}
                       {% endif %}
                       <br />
                   {% endfor %}

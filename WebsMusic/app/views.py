@@ -525,7 +525,7 @@ def myPlayList(request):
     _body = {"query": query}
     res = accessor.sparql_select(body=_body, repo_name=_repositorio)
     res = json.loads(res)
-    print(res)
+    #print(res)
     info = dict()
     for p in res['results']['bindings']:
         query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -541,13 +541,15 @@ def myPlayList(request):
                         optional{
                             <%s> cs:Track ?track .
                             ?track foaf:name ?tname .
-                            ?track cs:youtubeVideo ?idYT .
+                            optional{
+                                ?track cs:youtubeVideo ?idYT .
+                            }
                         }
                     }''' % (p['p']['value'], p['p']['value'], p['p']['value'], p['p']['value'], p['p']['value'])
         _body = {"query": query}
         res1 = accessor.sparql_select(body=_body, repo_name=_repositorio)
         res1 = json.loads(res1)
-        print(res1)
+        #print(res1)
         key = res1['results']['bindings'][0]
         info[p["p"]["value"]] = dict()
         info[p["p"]["value"]]["name"] = key["nome"]["value"]
@@ -555,11 +557,14 @@ def myPlayList(request):
         info[p["p"]["value"]]["numItems"] = key["numItems"]["value"]
         info[p["p"]["value"]]["tracks"] = dict()
         for t in res1['results']['bindings']:
+            print(t)
             if "track" in t.keys():
                 temp = dict()
-                temp['track'] = t['track']['value']
                 temp['tname'] = unquote(t['tname']['value'])
-                temp['idYT'] = "https://img.youtube.com/vi/" + t['idYT']['value'] + "/0.jpg"
+                if 'idYT' in t.keys():
+                    temp['idYT'] = "https://img.youtube.com/vi/" + t['idYT']['value'] + "/0.jpg"
+                else:
+                    temp['idYT'] = "https://songdewnetwork.com/sgmedia/assets/images/default-album-art.png"
                 info[p["p"]["value"]]["tracks"][t["track"]["value"]] = temp
 
     print(info)

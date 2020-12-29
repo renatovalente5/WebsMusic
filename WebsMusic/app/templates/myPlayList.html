@@ -33,7 +33,7 @@
                         <ul rel="cs:Track">
                             {% for id,musica in dados.tracks.items %}
                                 <li>
-                                    <img src="{{ musica.idYT }}" width="50" height="38"/><span  about="{{ id }}" typeof="cs:Track" property="foaf:name"> {{ musica.tname }}</span>
+                                    <span  about="{{ id }}" typeof="cs:Track"/> <img property="foaf:Image" src="{{ musica.idYT }}" width="50" height="38"/><span property="foaf:name"> {{ musica.tname }}</span>
                                 </li>
                             <br/>
                             {% endfor %}
