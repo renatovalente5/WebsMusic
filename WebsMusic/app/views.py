@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from s4api.graphdb_api import GraphDBApi
 from s4api.swagger import ApiClient
 from urllib.parse import unquote, quote
+from SPARQLWrapper import SPARQLWrapper, JSON
 # from BaseXClient import BaseXClient
 from lxml import etree
 import xmltodict
@@ -14,7 +15,7 @@ import random
 import datetime
 
 # from lxml import etree
-# from urllib.request import urlopen
+# from urllib.requet import urlopen
 # import datetime
 
 _endpoint = "http://localhost:7200"
@@ -439,6 +440,8 @@ def criarPlayList(request):
 
 
 def insertKnowsArtist(artista):
+
+
     query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                         PREFIX cs: <http://www.xpand.com/rdf/>
                         PREFIX foaf: <http://xmlns.com/foaf/0.1/>
@@ -610,3 +613,38 @@ def delete(request):
 
     return redirect(myPlayList)
 
+def Ummagumma(request):
+    sparql = SPARQLWrapper("http://dbpedia.org/sparql")
+    sparql.setQuery("""
+                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                SELECT ?label ?artist ?date ?genre ?cover ?sales ?abstract ?thumbnail
+                WHERE { <http://dbpedia.org/resource/Ummagumma> rdfs:label ?label .
+                        <http://dbpedia.org/resource/Ummagumma> dbo:artist ?artist . 
+                        <http://dbpedia.org/resource/Ummagumma> dbo:releaseDate ?date . 
+                        <http://dbpedia.org/resource/Ummagumma> dbo:genre ?genre . 
+                        <http://dbpedia.org/resource/Ummagumma> dbp:salesamount ?sales . 
+                        <http://dbpedia.org/resource/Ummagumma> rdfs:comment ?abstract . 
+                        <http://dbpedia.org/resource/Ummagumma> dbo:thumbnail ?thumbnail . 
+                 }
+            """)
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()
+
+    tparams = dict()
+    for result in results["results"]["bindings"]:
+        tparams["name"] = result["label"]["value"]
+        tparams["artist"] = result["artist"]["value"]
+        tparams["date"] = result["date"]["value"]
+        tparams["genre"] = result["genre"]["value"]
+        tparams["sales"] = result["sales"]["value"]
+        tparams["abstract"] = result["abstract"]["value"]
+        tparams["thumbnail"] = result["thumbnail"]["value"]
+        print(result["label"]["value"])
+        print(result["abstract"]["value"])
+
+    # print('---------------------------')
+
+    # for result in results["results"]["bindings"]:
+    #     print('%s: %s' % (result["label"]["xml:lang"], result["label"]["value"]))
+
+    return render(request, "Ummagumma.html", tparams)
