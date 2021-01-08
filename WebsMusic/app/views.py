@@ -77,8 +77,9 @@ def musicas(request):
                     ?id rdf:type cs:Track .
                     ?id foaf:name ?tname .
                     ?id cs:MusicArtist ?artist .
-                    ?artist foaf:name ?aname
-                }'''
+                    ?artist foaf:name ?aname .
+                    ?id cs:playCount ?streams
+                    }order by desc(xsd:integer(?streams))'''
 
     _body = {"query": query}
     res = accessor.sparql_select(body=_body, repo_name=_repositorio)
