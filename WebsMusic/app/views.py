@@ -67,19 +67,34 @@ def home(request):
 
 
 def musicas(request):
-    query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                PREFIX cs: <http://www.xpand.com/rdf/>
-                PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-                PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-                
-                select ?id ?tname ?aname
-                where { 
-                    ?id rdf:type cs:Track .
-                    ?id foaf:name ?tname .
-                    ?id cs:MusicArtist ?artist .
-                    ?artist foaf:name ?aname .
-                    ?id cs:playCount ?streams
-                    }order by desc(xsd:integer(?streams))'''
+    if 'musicOrder' in request.POST:
+        query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                    PREFIX cs: <http://www.xpand.com/rdf/>
+                    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+                    
+                    select ?id ?tname ?aname
+                    where { 
+                        ?id rdf:type cs:Track .
+                        ?id foaf:name ?tname .
+                        ?id cs:MusicArtist ?artist .
+                        ?artist foaf:name ?aname .
+                        ?id cs:playCount ?streams
+                        }order by desc(xsd:integer(?streams))'''
+    else:
+        query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                            PREFIX cs: <http://www.xpand.com/rdf/>
+                            PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+                            select ?id ?tname ?aname
+                            where { 
+                                ?id rdf:type cs:Track .
+                                ?id foaf:name ?tname .
+                                ?id cs:MusicArtist ?artist .
+                                ?artist foaf:name ?aname .
+                                ?id cs:playCount ?streams
+                                }'''
 
     _body = {"query": query}
     res = accessor.sparql_select(body=_body, repo_name=_repositorio)
@@ -131,17 +146,31 @@ def artist_tracks(request):
 
 
 def artistas(request):
-    query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                PREFIX cs: <http://www.xpand.com/rdf/>
-                PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-                PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-                
-                select ?id ?aname ?img
-                where { 
-                    ?id rdf:type cs:MusicArtist .
-                    ?id foaf:name ?aname .
-                    ?id foaf:Image ?img
-                }'''
+    if 'artistName' in request.POST:
+        query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                    PREFIX cs: <http://www.xpand.com/rdf/>
+                    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+                    
+                    select ?id ?aname ?img
+                    where { 
+                        ?id rdf:type cs:MusicArtist .
+                        ?id foaf:name ?aname .
+                        ?id foaf:Image ?img
+                    }order by asc(?aname)'''
+
+    else:
+        query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                            PREFIX cs: <http://www.xpand.com/rdf/>
+                            PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    
+                            select ?id ?aname ?img
+                            where { 
+                                ?id rdf:type cs:MusicArtist .
+                                ?id foaf:name ?aname .
+                                ?id foaf:Image ?img
+                            }'''
 
     _body = {"query": query}
     res = accessor.sparql_select(body=_body, repo_name=_repositorio)
@@ -160,6 +189,7 @@ def artistas(request):
         'info': info,
         'frase': "Artistas:",
     }
+
     return render(request, "artistas.html", tparams)
 
 
@@ -181,7 +211,7 @@ def albums(request):
                     ?album cs:datePublished ?data .
                     ?album cs:playCount ?count .
                     ?album foaf:Image ?img .
-                }'''
+                }order by asc(?albumName)'''
 
     _body = {"query": query}
     res = accessor.sparql_select(body=_body, repo_name=_repositorio)

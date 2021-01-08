@@ -1,14 +1,16 @@
 {% extends "layout.html" %}
 
 {% block content %}
-
-<h2>{{ frase }}</h2>
-    <div class="content">
-    <ul id="myTable" class="breadcrumb">
-        {% for name, dados in info.items %}
-                <li><img style="width: 120px; height: 120px;" src="{{ dados.img }}"/><a href="{% url 'artistTracks' %}?id={{ name}}" target="_blank"> {{ name }}</a></li>
-        {% endfor %}
-    </ul>
-</div>
-
+<form action='.' method='post'>
+    <input type="hidden" name="artistName" value="ola"/></p>
+    {% csrf_token %}
+    <h2>{{ frase }} <input class="btn btn-success" type="submit" name="Submit!" value="Order by Name" style="float: right;"/></h2>
+        <div class="content">
+        <ul id="myTable" class="breadcrumb">
+            {% for name, dados in info.items %}
+                    <li><img style="width: 120px; height: 120px;" src="{{ dados.img }}"/><a href="{% url 'artistTracks' %}?id={{ name}}" target="_blank"> {{ name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</form>
 {% endblock %}
