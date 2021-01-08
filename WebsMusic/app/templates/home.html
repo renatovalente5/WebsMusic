@@ -217,16 +217,16 @@ and is wrapped around the whole page content, except for the footer in this exam
       <!-- Posts -->
       <div class="w3-white w3-margin">
         <div class="w3-container w3-padding w3-black">
-          <h4>Popular Songs</h4>
+          <h4>Recommended Albums</h4>
         </div>
 
-          {% for name,dados in tracks.items %}
+          {% for name,artista in albums.items %}
               <ul class="w3-ul w3-hoverable w3-white">
                   <li class="w3-padding-16">
 {#                <img src="{{ dados.imagem }}" alt="Image" class="w3-left w3-margin-right" style="width:50px">#}
-                <a class="w3-large" href="{{ dados.url }}" target="_blank"> {{ name }}</a>
+                <a class="w3-large" href="{% url 'Recommendations' %}?album={{ name }}" target="_blank"> {{ name }}</a>
                 <br />
-                      <a href="{% url 'artistTracks' %}?id={{ dados.artista }}" target="_blank">{{ dados.artista }}</a>
+                      <a  target="_blank">{{ artista }}</a>
                    </li>
                </ul>
           {% endfor %}

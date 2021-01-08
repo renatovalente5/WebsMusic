@@ -56,9 +56,12 @@ def home(request):
         info[unquote(m['tname']['value'])]['url'] = "https://www.youtube.com/watch?v=" + unquote(m['youtube']['value'])
         info[unquote(m['tname']['value'])]['embed'] = "https://www.youtube.com/embed/" + unquote(m['youtube']['value'])
 
+    albums = {"Ummagumma" : "Pink Floyd", "JackBoys" : "JackBoys and Travis Scott", "Back in Black" : "AC/DC"}
+
     tparams = {
         'tracks': info,
         'frase': "Songs",
+        'albums' : albums
     }
     return render(request, "home.html", tparams)
 
@@ -614,33 +617,47 @@ def delete(request):
     return redirect(myPlayList)
 
 def Recommendations(request):
+    album = request.GET['album'].replace(" ","_")
+    album = "http://dbpedia.org/resource/"+album
+    print(album)
     sparql = SPARQLWrapper("http://dbpedia.org/sparql")
     sparql.setQuery("""
-                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                SELECT ?label ?artist ?date ?genre ?cover ?sales ?abstract ?thumbnail
-                WHERE { <http://dbpedia.org/resource/Ummagumma> rdfs:label ?label .
-                        <http://dbpedia.org/resource/Ummagumma> dbo:artist ?artist . 
-                        <http://dbpedia.org/resource/Ummagumma> dbo:releaseDate ?date . 
-                        <http://dbpedia.org/resource/Ummagumma> dbo:genre ?genre . 
-                        <http://dbpedia.org/resource/Ummagumma> dbp:salesamount ?sales . 
-                        <http://dbpedia.org/resource/Ummagumma> rdfs:comment ?abstract . 
-                        <http://dbpedia.org/resource/Ummagumma> dbo:thumbnail ?thumbnail . 
-                 }
-            """)
+                    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                    SELECT ?label ?artist ?date ?genre ?cover ?abstract ?thumbnail
+                    WHERE { <%s> rdfs:label ?label .
+                            <%s> dbp:artist ?artist . 
+                            optional{
+                                <%s> dbp:released ?date .
+                            } 
+                            optional{
+                                <%s> dbp:genre ?genre .
+                            }
+                            optional{
+                                <%s> rdfs:comment ?abstract .
+                            } 
+                             optional{
+                                <%s> dbo:thumbnail ?thumbnail .
+                                }
+                     }
+                """ % (album,album,album,album,album,album))
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
-
+    print(results)
     tparams = dict()
     for result in results["results"]["bindings"]:
         tparams["name"] = result["label"]["value"]
         tparams["artist"] = result["artist"]["value"]
-        tparams["date"] = result["date"]["value"]
-        tparams["genre"] = result["genre"]["value"]
-        tparams["sales"] = result["sales"]["value"]
-        tparams["abstract"] = result["abstract"]["value"]
-        tparams["thumbnail"] = result["thumbnail"]["value"]
-        print(result["label"]["value"])
-        print(result["abstract"]["value"])
+        if "date" in result.keys():
+            tparams["date"] = result["date"]["value"]
+        if "genre" in result.keys():
+            tparams["genre"] = result["genre"]["value"]
+        if "abstract" in result.keys():
+            if result["abstract"]["xml:lang"] == "pt" or result["abstract"]["xml:lang"] == "en":
+                tparams["abstract"] = result["abstract"]["value"]
+        if "thumbnail" in result.keys():
+            tparams["thumbnail"] = result["thumbnail"]["value"]
+        else:
+            tparams["thumbnail"] = "https://songdewnetwork.com/sgmedia/assets/images/default-album-art.png"
 
     # print('---------------------------')
 
