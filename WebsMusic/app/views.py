@@ -551,7 +551,30 @@ def knowArtists(request):
             tparams = {
                 'info': info,
                 'frase': "Artists",
-                'erro': True
+                'erro': True,
+                'erroFrase': "Insert the information requested"
+            }
+            return render(request, "knowArtists.html", tparams)
+
+        query_ask = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                    PREFIX cs: <http://www.xpand.com/rdf/>
+                    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+                    ask{
+                        ?id foaf:name "%s"
+                        }'''%(quote(artistNome))
+
+        _body = {"query": query_ask}
+        res = accessor.sparql_select(body=_body, repo_name=_repositorio)
+        res = json.loads(res)
+        print("ASK:",res['boolean'])
+        if res['boolean'] == False:
+            print("Aqui")
+            tparams = {
+                'info': info,
+                'frase': "Artists",
+                'erro': True,
+                'erroFrase': "Insert a correct Artist"
             }
             return render(request, "knowArtists.html", tparams)
 
