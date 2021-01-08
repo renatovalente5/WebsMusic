@@ -613,7 +613,7 @@ def delete(request):
 
     return redirect(myPlayList)
 
-def Ummagumma(request):
+def Recommendations(request):
     sparql = SPARQLWrapper("http://dbpedia.org/sparql")
     sparql.setQuery("""
                 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -647,4 +647,4 @@ def Ummagumma(request):
     # for result in results["results"]["bindings"]:
     #     print('%s: %s' % (result["label"]["xml:lang"], result["label"]["value"]))
 
-    return render(request, "Ummagumma.html", tparams)
+    return render(request, "Recommendations.html", tparams)

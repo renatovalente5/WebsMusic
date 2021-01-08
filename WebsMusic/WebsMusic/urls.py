@@ -31,6 +31,6 @@ urlpatterns = [
     #path('pageRSS/', views.pageRSS, name='pageRSS'),
     path('delete/', views.delete, name='delete'),
     path('knowArtists/', views.knowArtists, name='knowArtists'),
-    path('Ummagumma/', views.Ummagumma, name='Ummagumma'),
+    path('Recommendations/', views.Recommendations, name='Recommendations'),
 
 ]
