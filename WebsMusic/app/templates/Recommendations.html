@@ -7,63 +7,17 @@
                     <img style="width: 185px; height: 185px; float:right"  src="{{thumbnail}}"/><br />
                 </div>
                 <div class="col-9">
-                    <b>Album : </b> <span property="foaf:name">{{ name }}</span> <br />
+                    <b>Album : </b> <span>{{ name }}</span> <br />
 
-                    <b>Artista: </b><span><a href="{{ artist }}" target="_blank">{{ artist }}</a></span><br />
+                    <b>Artista: </b><span>{{ artist }}</span><br />
 
                     <b>Data:</b> <span> {{ date }}</span><br>
-                    <b>Genre: </b> <span><a href="{{ genre }}" target="_blank">{{ genre }}</a></span><br>
-                    {% if nextAlbum %}
-                        <b>Next Album:</b> <span property="cs:nextAlbum">{{nextAlbum}}</span><br>
-                    {% endif %}
-                    {% if prevAlbum %}
-                        <b>Previous Album:</b> <span property="cs:nextAlbum">{{prevAlbum}}</span><br>
-                    {% endif %}
-                    {% if producer %}
-                        <b>Producer:</b> <span property="cs:nextAlbum">{{producer}}</span><br>
+                    {% if genre %}
+                        <b>Genre: </b> <span>{{ genre }}</span><br>
                     {% endif %}
 
                 </div>
             </div><br /><br />
             <b>Biography:</b><br />&emsp; <span> {{ abstract }}</span><br><br />
-{#            <div class="row">#}
-{#                <div class="col-4">#}
-{#                    {% if recorders %}#}
-{#                    <b>Recorders:</b>#}
-{#                    <ul>#}
-{#                        {% for r in recorders %}#}
-{#                            <li>#}
-{#                                <span property="cs:recoder">{{ r }}</span>#}
-{#                            </li>#}
-{#                        {% endfor %}#}
-{#                    </ul>#}
-{#                    {% endif %}#}
-{#                </div>#}
-{#                <div class="col-4">#}
-{#                    {% if tags %}#}
-{#                        <b>Tags:</b>#}
-{#                        <ul rel="cs:Tag">#}
-{#                            {% for nome, id in tags.items %}#}
-{#                                <li>#}
-{#                                      <span about="{{ id }}" property="foaf:name">{{ nome }}</span>#}
-{#                                </li>#}
-{#                            {% endfor %}#}
-{#                        </ul>#}
-{#                    {% endif %}#}
-{#                </div>#}
-{#                <div class="col-4">#}
-{#                    {% if simAlbums %}#}
-{#                    <b>Similar Albums:</b>#}
-{#                        <ul rel="cs:similarAlbum">#}
-{#                            {% for Aname, dados in simAlbums.items %}#}
-{#                                <li>#}
-{#                                    <a href="{% url 'albumDetails' %}?id={{ dados.id }}" about="{{ dados.uri }}" typeof="cs:Album"#}
-{#                                          property="foaf:name">{{ Aname}}</a>#}
-{#                                </li>#}
-{#                            {% endfor %}#}
-{#                        </ul>#}
-{#                    {% endif %}#}
-{#                </div>#}
-{#            </div>#}
     </div>
 {% endblock %}
