@@ -67,20 +67,53 @@ def home(request):
 
 
 def musicas(request):
+    query = None
     if 'musicOrder' in request.POST:
-        query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                    PREFIX cs: <http://www.xpand.com/rdf/>
-                    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-                    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-                    
-                    select ?id ?tname ?aname
-                    where { 
-                        ?id rdf:type cs:Track .
-                        ?id foaf:name ?tname .
-                        ?id cs:MusicArtist ?artist .
-                        ?artist foaf:name ?aname .
-                        ?id cs:playCount ?streams
-                        }order by desc(xsd:integer(?streams))'''
+        if "Most Played" == request.POST['musicOrder']:
+            query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                        PREFIX cs: <http://www.xpand.com/rdf/>
+                        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+                        
+                        select ?id ?tname ?aname
+                        where { 
+                            ?id rdf:type cs:Track .
+                            ?id foaf:name ?tname .
+                            ?id cs:MusicArtist ?artist .
+                            ?artist foaf:name ?aname .
+                            ?id cs:playCount ?streams
+                            }order by desc(xsd:integer(?streams))'''
+
+        elif "Music Name" == request.POST['musicOrder']:
+            query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                        PREFIX cs: <http://www.xpand.com/rdf/>
+                        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+                        select ?id ?tname ?aname
+                        where { 
+                            ?id rdf:type cs:Track .
+                            ?id foaf:name ?tname .
+                            ?id cs:MusicArtist ?artist .
+                            ?artist foaf:name ?aname .
+                            ?id cs:playCount ?streams
+                            }order by asc(?tname)'''
+
+        elif "Artist Name" == request.POST['musicOrder']:
+            query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                        PREFIX cs: <http://www.xpand.com/rdf/>
+                        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+                        select ?id ?tname ?aname
+                        where { 
+                            ?id rdf:type cs:Track .
+                            ?id foaf:name ?tname .
+                            ?id cs:MusicArtist ?artist .
+                            ?artist foaf:name ?aname .
+                            ?id cs:playCount ?streams
+                            }order by asc(?tname)'''
+
     else:
         query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                             PREFIX cs: <http://www.xpand.com/rdf/>
