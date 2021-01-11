@@ -710,6 +710,8 @@ def Recommendations(request):
     sparql = SPARQLWrapper("http://dbpedia.org/sparql")
     sparql.setQuery("""
                     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                    PREFIX dbo:  <http://dbpedia.org/ontology/>
+                    PREFIX dbp:  <http://dbpedia.org/property/>
                     SELECT ?label ?artist ?date ?genre ?cover ?abstract ?thumbnail
                     WHERE { <%s> rdfs:label ?label .
                             <%s> dbp:artist ?artist . 
