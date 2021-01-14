@@ -1,4 +1,5 @@
 # WebsMusic
+This project was built using the Django platform, having as data repository the Triplestore GraphDB imported from a file "dataset.rdf". All queries made to BD used the SPARQL language. Some information pages were created with RDFa. 
 
 ## Dependências do Python
 	python interpreter: Python 3.8
