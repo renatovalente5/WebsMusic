@@ -84,7 +84,7 @@ def musicas(request):
                             ?id cs:playCount ?streams
                             }order by desc(xsd:integer(?streams))'''
 
-        elif "Music Name" == request.POST['musicOrder']:
+        elif "Songs Name" == request.POST['musicOrder']:
             query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                         PREFIX cs: <http://www.xpand.com/rdf/>
                         PREFIX foaf: <http://xmlns.com/foaf/0.1/>
@@ -112,7 +112,7 @@ def musicas(request):
                             ?id cs:MusicArtist ?artist .
                             ?artist foaf:name ?aname .
                             ?id cs:playCount ?streams
-                            }order by asc(?tname)'''
+                            }order by asc(?aname)'''
 
     else:
         query = '''PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
