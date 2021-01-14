@@ -31,7 +31,13 @@ Este projeto foi construído utilizando a plataforma Django, tendo como reposit�
 
 Páginas existentes e o que utilizam:
 
-Nota: Em todas as páginas existe uma search bar que funciona à base de literais
+Nota: 
+Em todas as páginas existe uma search bar que funciona à base de literais
+
+Site para testar o RDFa - https://rdfa.info/play/ 
+
+Todas as formas (butões) de ordenação que se encontram nas páginas executam novas queries à base de dados e dão refresh à página. 
+
 
 -Home
 Página de entrada da aplicação, escolhendo um dos álbuns recomendados o utilizador é remetido para uma página com informações sobre esse álbum, esta informação é recolhida em runtime à dbpedia pois estes álbuns não se encontram na base de dados.
@@ -60,5 +66,6 @@ Usa SPARQL (pesquisa e remoção de dados) e RDFa.
 
 -Known Artists
 Página que cria uma inferência, dado um artista pelo utilizador que esteja na base de dados é pesquisada as editoras desse artista e procura artistas que tenham editoras em comum. Para verificar a existência do artista introduzido pelo utilizador é feita uma querie do tipo ask á base de dados.
+Regra da inferência - Procura pelo editor de todos os artistas e caso seja comum ao artista pequisado é criada a inferência KnownArtists (que os artistas se conhecem), não verifica a existência de inferências já criadas. 
 Usa SPARQL (pesquisa e inserção de dados).
 
